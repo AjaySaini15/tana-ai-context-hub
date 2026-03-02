@@ -179,6 +179,51 @@ Upload `~/.claude/ai-memory/ai-context-export.md` to a Claude Project.
 
 ---
 
+## What Works Where
+
+Not everything is automatic on every tool. Here's an honest breakdown:
+
+| Capability | Claude Code CLI | Claude Desktop | Cowork | Gemini CLI | Mobile |
+|---|---|---|---|---|---|
+| Context loading at session start | ✓ Auto (CLAUDE.md) | ✓ After setup | ✓ After setup | ✓ After setup | ✓ Via export |
+| Skill loading on demand | ✓ Auto | ✓ | ✓ | ✓ | ✓ (read-only) |
+| `/skill-improve` auto-trigger | ✓ | — | — | — | — |
+| Writing changes back to Tana | ✓ Inline | Manual | ✓ Via `Modified By` | Manual | — |
+| Pulling changes from Tana | ✓ `/ai-memory-sync` | Manual | ✓ Reads fresh each session | Manual | Re-export |
+
+**Claude Code is the primary interface** — it's where the self-improvement loop lives. The auto-trigger for `/skill-improve` is a Claude Code behavioral pattern and won't fire automatically in other tools.
+
+**Other tools are consumers.** They read context and skills from Tana at session start via `read_node` with hardcoded IDs. This works reliably everywhere. When they update a Tana node (e.g., Cowork editing org context), setting `Modified By = other-llm` signals Claude Code to pull the change on next sync.
+
+**The one-time setup per tool:** Paste `llm-session-instructions.md` into the tool's base description or folder instructions. This tells it which node IDs to load and how to signal changes back. See the next section.
+
+---
+
+## Connecting Other Tools (Cowork, Claude Desktop, Gemini)
+
+After running `/ai-memory-setup`, a personalized instruction block is generated at `~/.claude/ai-memory/llm-session-instructions.md` with your real node IDs filled in.
+
+### Claude Desktop / Cowork
+
+1. Open the tool's folder or project settings
+2. Paste the contents of `llm-session-instructions.md` as the base/folder instructions
+3. That's it — every new conversation in that folder will load your Tana context at session start
+
+**For Cowork specifically:** Cowork has native skill support. You can register individual skills in Cowork directly (pointing to the same Tana node IDs), which gives Cowork better auto-triggering for specific tasks. Without this, skills still work — Cowork just loads them on demand when you ask for a specific task.
+
+### What the instruction block does
+
+- Loads tier-1 context nodes at session start via `read_node` (behavioral rules at depth 3, reference nodes at depth 1)
+- Loads skill nodes on demand when the task matches — always reads fresh from Tana, never a cached version
+- Tells the LLM to set `Modified By = other-llm` when it updates a node, so Claude Code can detect and pull the change
+
+### What it doesn't do
+
+- Auto-trigger `/skill-improve` — this requires the LLM to recognize correction patterns mid-conversation, which is a Claude Code behavioral rule. On other tools, run `/skill-improve [skill-name]` explicitly after a correction.
+- Push local file changes — only Claude Code has `/ai-memory-sync`. On other tools, edits happen directly in Tana.
+
+---
+
 ## The #AI_Context Schema
 
 One supertag, two types of nodes:
@@ -205,6 +250,9 @@ skills/
   ai-memory-setup/SKILL.md    — Bootstrap skill
   ai-memory-sync/SKILL.md     — Sync skill
   skill-improve/SKILL.md      — Improvement capture skill
+screenshots/
+  AI_Context Supertag in Tana Overview.png     — Live #AI_Context table in Tana
+  AI_Context in Tana Expanded Skill View.png   — Skill node with real change log
 README.md                     — This file
 SETUP.md                      — Detailed walkthrough
 llm-session-instructions.md   — Template for any LLM with Tana MCP (Claude Desktop, Gemini, etc.)
