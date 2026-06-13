@@ -1,3 +1,5 @@
 .DS_Store
 slack-post.md
 *.jpg
+__pycache__/
+*.pyc
