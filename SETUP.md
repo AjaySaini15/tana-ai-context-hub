@@ -41,13 +41,18 @@ Download or clone this repository. Then copy the skill folders:
 mkdir -p ~/.claude/skills
 cp -r skills/ai-memory-setup ~/.claude/skills/
 cp -r skills/ai-memory-sync ~/.claude/skills/
+cp -r skills/skill-improve ~/.claude/skills/
 ```
 
 Verify they're in place:
 ```bash
 ls ~/.claude/skills/
-# Should show: ai-memory-setup  ai-memory-sync
+# Should show: ai-memory-setup  ai-memory-sync  skill-improve
 ```
+
+> This setup covers the **memory hub**. To also install the four **operating skills**
+> (explore your Tana, visualize the schema, turn meetings into tasks, run a live
+> co-pilot), see **[GETTING-STARTED.md](GETTING-STARTED.md)**.
 
 ---
 

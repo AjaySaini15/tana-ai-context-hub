@@ -94,7 +94,7 @@ AFTER:
   If ownership is ambiguous, assign to the meeting organizer.
   NEVER default to the user running the skill as assignee.
 
-REASON: Tasks were being assigned to Ajay when Manmohan was the
+REASON: Tasks were being assigned to you (the session user) when Riya was the
 action owner. The skill was defaulting to the session user instead
 of reading the transcript for explicit ownership.
 ```
@@ -207,12 +207,12 @@ For reference — this is what a skill node looks like in Tana when properly set
   Change Log
     v1.3 (2026-03-01) — Fixed task attribution to read explicit ownership
                         before defaulting. Triggered by: wrong assignee in
-                        Manmohan 1:1 processing.
+                        a 1:1 processing.
     v1.2 (2026-02-27) — Added overexplaining count to soft skills check.
-                        Triggered by: Manmohan baseline revealed missed pattern.
+                        Triggered by: a coaching baseline revealed a missed pattern.
     v1.1 (2026-02-11) — Extended task extraction to full MoM, not just
                         action items section. Triggered by: missed 10 tasks
-                        in Bangalore plan meeting.
+                        in a planning meeting.
     v1.0 (2026-02-06) — Initial version.
 ```
 

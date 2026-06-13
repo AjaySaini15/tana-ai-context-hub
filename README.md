@@ -140,6 +140,26 @@ v1.0 (2026-02-06) — Initial version.
 
 ---
 
+## The Operating Skills
+
+The three skills above keep your memory current and self-improving. These four **do the work** against your Tana graph — explore it, see its structure, turn meetings into action, and coach you live. Each is written as a worked example against a single fictional [demo workspace](demo-workspace/DEMO-WORKSPACE.md), so you can read it end-to-end before wiring it to your own Tana (swap the `demo…` IDs for yours).
+
+### `/tana-understand` — Explore any Tana system
+Maps an unfamiliar Tana workspace — supertags, fields, how nodes link — and proposes where an LLM can help. The on-ramp when you're staring at a blank (or inherited) graph and don't know where to start.
+
+### `/tana-schema-graph` — Visualize your schema
+Renders your supertags and their field relationships as an interactive force-directed graph (self-contained HTML). Turns an abstract tag/field structure into a picture you can reason about.
+
+### `/tana-action-items` — Meetings → structured tasks
+The workhorse. Takes a meeting summary and produces structured Tana tasks (assignee, context, urgency, parent meeting), plus person observations and decisions — with deduplication and a single approval gate. The "capture everything worth retaining" half of the second-brain loop.
+
+### `/meeting-brain` — Live meeting co-pilot
+The unique-to-Tana one. Tana's local API exposes the **in-progress** transcript as queryable nodes, so this polls it *mid-meeting* and fires short real-time flags via `claude -p` — coaching nudges + strategic prompts — from a per-meeting context file. (Most tools only give you the transcript *after* the meeting; Tana lets you ping it live.) Ships as a runnable Python script (one `fetch_transcript_lines()` stub) **plus `coach-popup.swift`** — a macOS menu-bar overlay that floats the live flags on your screen while you're still in the room.
+
+**New here?** Start with **[GETTING-STARTED.md](GETTING-STARTED.md)** — it walks these four against the demo workspace and shows how they read/write Tana (MCP or a local bridge).
+
+---
+
 ## Install
 
 ### Prerequisites
@@ -151,10 +171,18 @@ v1.0 (2026-02-06) — Initial version.
 
 ```bash
 mkdir -p ~/.claude/skills
+# Memory & self-improvement layer
 cp -r skills/ai-memory-setup ~/.claude/skills/
 cp -r skills/ai-memory-sync ~/.claude/skills/
 cp -r skills/skill-improve ~/.claude/skills/
+# Operating layer — explore / visualize / process meetings / live co-pilot
+cp -r skills/tana-understand ~/.claude/skills/
+cp -r skills/tana-schema-graph ~/.claude/skills/
+cp -r skills/tana-action-items ~/.claude/skills/
+cp -r skills/meeting-brain ~/.claude/skills/
 ```
+
+> The operating skills are worked examples — see **[GETTING-STARTED.md](GETTING-STARTED.md)** for the tour and how to point them at your own Tana.
 
 ### Step 2: Run setup
 
